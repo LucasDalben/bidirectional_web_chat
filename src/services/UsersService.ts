@@ -4,14 +4,14 @@ import { User } from "../entities/User"
 
 class UserService {
     
-    private usersRepository: Repository<User>
+    private userRepository: Repository<User>
     constructor(){
-        this.usersRepository = getCustomRepository(UsersRepository)
+        this.userRepository = getCustomRepository(UsersRepository)
     }
 
-    async create(email: string){
+    async create(email : string){
 
-        const userExists = await this.usersRepository.findOne({
+        const userExists = await this.userRepository.findOne({
             email
         })
 
@@ -19,13 +19,21 @@ class UserService {
             return userExists;
         }
 
-        const user = this.usersRepository.create({
+        const user = this.userRepository.create({
             email
         })
 
-        await this.usersRepository.save(user)
+        await this.userRepository.save(user)
 
         return user
+    }
+
+    async findByEmail(email : string) {
+        const connection = await this.userRepository.findOne({
+            email
+        })
+
+        return connection
     }
 }
 
